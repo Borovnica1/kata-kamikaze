@@ -1,0 +1,30 @@
+Kata:
+
+Write a function named sumDigits which takes a number as input and returns the sum of the absolute value of each of the number's decimal digits. For example:
+
+  sumDigits(10);  // Returns 1
+  sumDigits(99);  // Returns 18
+  sumDigits(-32); // Returns 5
+Let's assume that all numbers in the input will be integer values.
+
+My Solution:
+
+function sumDigits(number) {
+  var output = [],
+      sum = 0; 
+  while (number) {
+     if(number > 0) {
+      output.push(number % 10);
+      number = Math.floor(number/10);
+    } else {
+      output.push(number % 10 * -1);
+      number = Math.ceil(number/10)  * -1;
+    }
+  }
+  
+  for (var i = 0; i < output.length; i++) {
+    sum += output[i];
+  } 
+
+  return sum;
+}
