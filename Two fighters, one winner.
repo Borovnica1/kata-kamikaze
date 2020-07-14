@@ -1,0 +1,50 @@
+Kata:
+
+Description:
+Create a function that returns the name of the winner in a fight between two fighters.
+
+Each fighter takes turns attacking the other and whoever kills the other first is victorious. Death is defined as having health <= 0.
+
+Each fighter will be a Fighter object/instance. See the Fighter class below in your chosen language.
+
+Both health and damagePerAttack (damage_per_attack for python) will be integers larger than 0. You can mutate the Fighter objects.
+
+Example:
+function Fighter(name, health, damagePerAttack) {
+        this.name = name;
+        this.health = health;
+        this.damagePerAttack = damagePerAttack;
+        this.toString = function() { return this.name; }
+}
+
+My Solution:
+
+function declareWinner(fighter1, fighter2, firstAttacker) {
+  var winner;
+  while (fighter1.health > 0 && fighter2.health > 0) {
+    
+    if (firstAttacker === fighter2.name) {
+      fighter1.health = fighter1.health - fighter2.damagePerAttack;
+      if (fighter1.health > 0) {
+        fighter2.health = fighter2.health - fighter1.damagePerAttack;
+      }
+      
+    } else {
+      fighter2.health = fighter2.health - fighter1.damagePerAttack;
+      if (fighter2.health > 0) {
+        fighter1.health = fighter1.health - fighter2.damagePerAttack;
+      }
+    }
+    //25 17 = 20 14 = 15 11 = 10 8 = 5 5 = 0 2
+
+  }
+  if (fighter2.health <= 0) {
+    winner = fighter1.name;
+  } else {
+    winner = fighter2.name;
+  }
+  console.log(fighter1.health)
+  console.log(fighter2.health)
+  console.log(winner);
+  return winner;
+}
