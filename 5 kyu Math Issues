@@ -1,0 +1,43 @@
+Kata:
+
+Description:
+Oh no, our Math object was "accidently" reset. Can you re-implement some of those functions? We can assure, that only non-negative numbers are passed as arguments. So you don't have to consider things like undefined, null, NaN, negative numbers, strings and so on.
+
+Here is a list of functions, we need:
+
+Math.round()
+Math.ceil()
+Math.floor()
+
+My Solution:
+
+Math.round = function(number) {
+  var n = number.toString(10);
+  var beforeDot,
+      afterDot;
+  if (n.includes('.') == true) {
+    beforeDot = parseInt(n.slice(0, n.indexOf('.')));
+    afterDot = parseInt(n.slice(n.indexOf('.') + 1).slice(0, 1));
+  } else {
+    return number;
+  }
+  if (afterDot < 5) {
+    number = beforeDot;
+  } else {
+    number = beforeDot + 1;
+  }
+  console.log(number, beforeDot, afterDot);
+  return number;
+};
+
+Math.ceil = function(number) {
+  var n = number.toString(10);
+  if (n.includes('.')) number = parseInt(n.slice(0, n.indexOf('.'))) + 1;
+  return number;
+};
+
+Math.floor = function(number) {
+  var n = number.toString(10);
+  if (n.includes('.')) number = parseInt(n.slice(0, n.indexOf('.')));
+  return number;
+};
