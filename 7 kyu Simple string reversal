@@ -1,0 +1,42 @@
+Kata: 
+
+Description:
+In this Kata, we are going to reverse a string while maintaining the spaces (if any) in their original place.
+
+For example:
+
+solve("our code") = "edo cruo"
+-- Normal reversal without spaces is "edocruo". 
+-- However, there is a space after the first three characters, hence "edo cruo"
+
+solve("your code rocks") = "skco redo cruoy"
+solve("codewars") = "srawedoc"
+More examples in the test cases. All input will be lower case letters and in some cases spaces.
+
+Good luck!
+
+My Solution;
+
+function solve(str){
+  var arrStr = str.split('');
+  var onlyLetters = [];
+  arrStr.forEach((el, i) => {
+    if (el.charCodeAt(0) > 96 && el.charCodeAt(0) < 123) {
+      onlyLetters.push(el);
+    }
+  });
+  var j = 1;
+  for (var i = 0; i < arrStr.length; i++) {
+    if (arrStr[i].charCodeAt(0) > 96 && arrStr[i].charCodeAt(0) < 123) {
+      arrStr[i] = onlyLetters[onlyLetters.length - j];
+      j++;
+    } else {
+      arrStr[i] = ' ';
+    }
+  }
+  var lol = 'az'
+  arrStr = arrStr.join('');
+  console.log(arrStr, onlyLetters);
+  console.log(lol.charCodeAt(0), lol.charCodeAt(1))
+  return arrStr;
+}
