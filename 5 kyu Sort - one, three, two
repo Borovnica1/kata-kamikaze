@@ -1,0 +1,108 @@
+Kata:
+
+Description:
+Hey You !
+Sort these integers for me ...
+
+By name ...
+
+Do it now !
+
+Input
+Range is 0-999
+
+There may be duplicates
+
+The array may be empty
+
+Example
+Input: 1, 2, 3, 4
+Equivalent names: "one", "two", "three", "four"
+Sorted by name: "four", "one", "three", "two"
+Output: 4, 1, 3, 2
+Notes
+Don't pack words together:
+e.g. 99 may be "ninety nine" or "ninety-nine"; but not "ninetynine"
+e.g 101 may be "one hundred one" or "one hundred and one"; but not "onehundredone"
+Don't fret about formatting rules, because if rules are consistently applied it has no effect anyway:
+e.g. "one hundred one", "one hundred two"; is same order as "one hundred and one", "one hundred and two"
+e.g. "ninety eight", "ninety nine"; is same order as "ninety-eight", "ninety-nine"
+
+My Solution:
+
+function sortByName(ary) {
+  console.log(843 % 100);
+  var hunderts,
+      tens,
+      ones;
+  var namesArr = [];
+  for (var i = 0; i < ary.length; i++) {
+    var nameStr = '';
+    hunderts = ary[i] - (ary[i] % 100);
+    tens = (ary[i] - hunderts) - (ary[i] % 10);
+    ones = ary[i] - hunderts - tens;
+    switch (hunderts) {
+        case (900): nameStr += 'nine hundred   ';break;
+        case (800): nameStr += 'eight hundred   ';break;
+        case (700): nameStr += 'seven hundred   ';break;
+        case (600): nameStr += 'six hundred   ';break;
+        case (500): nameStr += 'five hundred   ';break;
+        case (400): nameStr += 'four hundred   ';break;
+        case (300): nameStr += 'three hundred   ';break;
+        case (200): nameStr += 'two hundred   ';break;
+        case (100): nameStr += 'one hundred   ';break;
+    }
+    if ((ary[i] % 100) < 20 && (ary[i] % 100) > 9) {
+      switch (ary[i] % 100) {
+        case (19): nameStr += 'nineteen  '; break;
+        case (18): nameStr += 'eighteen  '; break;
+        case (17): nameStr += 'seventeen  '; break;
+        case (16): nameStr += 'sixteen  '; break;
+        case (15): nameStr += 'fifteen  '; break;
+        case (14): nameStr += 'fourteen  '; break;
+        case (13): nameStr += 'thirteen  '; break;
+        case (12): nameStr += 'twelve  '; break;
+        case (11): nameStr += 'eleven  '; break;
+        case (10): nameStr += 'ten  '; break;
+      }
+    } else {
+      
+      switch (tens) {
+          case (90): nameStr += 'ninety   ';break;
+          case (80): nameStr += 'eighty   ';break;
+          case (70): nameStr += 'seventy   ';break;
+          case (60): nameStr += 'sixty   ';break;
+          case (50): nameStr += 'fifty   ';break;
+          case (40): nameStr += 'forty   ';break;
+          case (30): nameStr += 'thirty   ';break;
+          case (20): nameStr += 'twenty   ';break;
+      }
+      
+      switch (ones) {
+          case (9): nameStr += 'nine  '; break;
+          case (8): nameStr += 'eight  '; break;
+          case (7): nameStr += 'seven  '; break;
+          case (6): nameStr += 'six  '; break;
+          case (5): nameStr += 'five  '; break;
+          case (4): nameStr += 'four  '; break;
+          case (3): nameStr += 'three  '; break;
+          case (2): nameStr += 'two  '; break;
+          case (1): nameStr += 'one  '; break;
+      }
+    }
+    if (ary[i] == 0) nameStr = 'zero  ';
+    
+    console.log(hunderts, tens, ones, nameStr);
+    nameStr += ary[i];
+    namesArr.push(nameStr.trim());
+  }
+  console.log(namesArr);
+  namesArr.sort();
+  
+  for (var i = 0; i < ary.length; i++) {
+    var index = namesArr[i].slice(namesArr[i].length - 3, namesArr[i].length);
+    index = parseInt(index.trim());
+    ary[i] = index;
+  }
+  return ary;
+}
