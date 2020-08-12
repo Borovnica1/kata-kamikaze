@@ -1,0 +1,16 @@
+Kata:
+
+Description:
+Write function alternateCase which switch every letter in string from upper to lower and from lower to upper. E.g: Hello World -> hELLO wORLD
+
+My Solution:
+
+function alternateCase(s) {
+  var newStr;
+  s = s.split('');
+  for (var i = 0; i < s.length; i++) {
+    s[i] == s[i].toUpperCase() ? s[i] = s[i].toLowerCase() : s[i] = s[i].toUpperCase();
+  }
+  s = s.join('');
+  return s;
+}
