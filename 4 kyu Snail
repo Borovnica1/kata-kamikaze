@@ -1,0 +1,87 @@
+Kata Desc:
+
+Description:
+Snail Sort
+Given an n x n array, return the array elements arranged from outermost elements to the middle element, traveling clockwise.
+
+array = [[1,2,3],
+         [4,5,6],
+         [7,8,9]]
+snail(array) #=> [1,2,3,6,9,8,7,4,5]
+For better understanding, please follow the numbers of the next array consecutively:
+
+array = [[1,2,3],
+         [8,9,4],
+         [7,6,5]]
+snail(array) #=> [1,2,3,4,5,6,7,8,9]
+This image will illustrate things more clearly:
+
+
+NOTE: The idea is not sort the elements from the lowest value to the highest; the idea is to traverse the 2-d array in a clockwise snailshell pattern.
+
+NOTE 2: The 0x0 (empty matrix) is represented as en empty array inside an array [[]].
+
+
+My Solution:
+
+snail = function(array) {
+  console.log(array)
+  if (array == [] || array.length < 2) return array[0];
+  //  figure how many rows and cols are there!
+  var result = [];
+  var rows = array.length,
+      cols = array[0].length;
+  console.log(rows, cols)
+  
+  function top(arr) {
+    arr.forEach(elem => {
+      result.push(elem);
+      arr.slice()
+    });
+    array.splice(0, 1);
+  }
+  // iterations second arg???
+  function right(arrays) {
+    arrays.forEach(arr => {
+      result.push(arr[arr.length - 1]);
+      arr.splice(arr.length - 1, 1);
+    })
+  }
+  function bot(arr) {
+    arr.slice().reverse().forEach(elem => {
+      result.push(elem);
+    });
+    array.splice(array.length - 1, 1);
+  }
+  function left(arrays) {
+    arrays.slice().reverse().forEach(arr => {
+      result.push(arr[0]);
+      arr.splice(0, 1);
+    })
+    console.log(array);
+  }
+  
+  
+  // Call these methods until there is nothing in array
+  var counter = 0;
+  while (array.length != 0) {
+    
+    if (counter == 0) {
+      top(array[0]);
+    } else if (counter == 1) {
+      right(array);
+    } else if (counter == 2) {
+      bot(array[array.length - 1])
+    } else {
+      left(array);
+    }
+    counter++;
+    if (counter >= 3) counter -= 4;
+  }
+  console.log(array);
+  console.log(result);
+  // 3 2 2 1 1
+  // 4 3 3 2 2 1 1
+  // top(first array) right(last of every array) bot(last array traversed) left(first of every array) top(first array)
+  return result;
+}
