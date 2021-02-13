@@ -1,0 +1,62 @@
+Kata:
+
+Description:
+Instructions
+Complete the function that returns the lyrics for the song 99 Bottles of Beer as an array of strings: each line should be a separate element - see the example at the bottom.
+
+Note: in order to avoid hardcoded solutions, the size of your code is limited to 1000 characters
+
+Lyrics
+99 bottles of beer on the wall, 99 bottles of beer.
+Take one down and pass it around, 98 bottles of beer on the wall.
+
+98 bottles of beer on the wall, 98 bottles of beer.
+Take one down and pass it around, 97 bottles of beer on the wall.
+
+...and so on...
+
+3 bottles of beer on the wall, 3 bottles of beer.
+Take one down and pass it around, 2 bottles of beer on the wall.
+
+2 bottles of beer on the wall, 2 bottles of beer.
+Take one down and pass it around, 1 bottle of beer on the wall.
+
+1 bottle of beer on the wall, 1 bottle of beer.
+Take one down and pass it around, no more bottles of beer on the wall.
+
+No more bottles of beer on the wall, no more bottles of beer.
+Go to the store and buy some more, 99 bottles of beer on the wall.
+
+Example
+[ "99 bottles of beer on the wall, 99 bottles of beer.",
+  "Take one down and pass it around, 98 bottles of beer on the wall.",
+  "98 bottles of beer on the wall, 98 bottles of beer.",
+
+  ...and so on...
+
+  "3 bottles of beer on the wall, 3 bottles of beer.",
+  "Take one down and pass it around, 2 bottles of beer on the wall.",
+  "2 bottles of beer on the wall, 2 bottles of beer.",
+  "Take one down and pass it around, 1 bottle of beer on the wall.",
+  "1 bottle of beer on the wall, 1 bottle of beer.",
+  "Take one down and pass it around, no more bottles of beer on the wall.",
+  "No more bottles of beer on the wall, no more bottles of beer.",
+  "Go to the store and buy some more, 99 bottles of beer on the wall." ]
+
+Sol:
+
+var sing = function () {
+  var lyrics = [],
+      sub,
+      plural = 's';
+  for (var i = 99; i > 0; i--) {
+    plural = i > 1 ? 's' : '';
+    sub = i - 1 === 0 ? 'no more' : i - 1
+    lyrics.push(i + ' bottle'+plural+' of beer on the wall, ' + i + ' bottle'+plural+' of beer.');
+    plural = sub !== 1 ? 's' : '';
+    lyrics.push('Take one down and pass it around, ' + sub + ' bottle'+plural+' of beer on the wall.');
+  }
+  lyrics.push('No more bottles of beer on the wall, ' + sub + ' bottle'+plural+' of beer.');
+  lyrics.push('Go to the store and buy some more, 99 bottles of beer on the wall.');
+  return lyrics
+};
