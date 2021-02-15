@@ -1,0 +1,53 @@
+Kata:
+
+Description:
+In this kata you have to create all permutations of an input string and remove duplicates, if present. This means, you have to shuffle all letters from the input in all possible orders.
+
+Examples:
+
+permutations('a'); // ['a']
+permutations('ab'); // ['ab', 'ba']
+permutations('aabb'); // ['aabb', 'abab', 'abba', 'baab', 'baba', 'bbaa']
+The order of the permutations doesn't matter.
+
+Sol:
+
+function permutations(string) {
+  var answer = []
+  var occur = {}
+  string.split('').forEach(char => {
+    if (char in occur) {
+      occur[char] += 1
+    } else {
+      occur[char] = 1
+    }
+  })
+  console.log(occur)
+  // maybe sort them ?!?!?!?!!?
+  var str = []
+  var count = []
+  for (key in occur) {
+    str.push(key)
+    count.push(occur[key])
+  }
+  
+  var result = new Array(string.length)
+  console.log(str, count)
+  permute_util(str, count, result, 0);
+  
+  function permute_util(str, count, result, level) {
+    if (level == result.length) {
+      answer.push(result.join(''));
+      return
+    } 
+    for (var i = 0; i < str.length; i++) {
+      if (count[i] == 0) continue
+      result[level] = str[i];
+      count[i]--;
+      permute_util(str, count, result, level + 1)
+      count[i]++;
+    }
+    
+  }
+  return answer
+}
