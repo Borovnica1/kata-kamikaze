@@ -1,0 +1,21 @@
+Kata:
+
+Description:
+Complete the solution so that it reverses the string passed into it.
+
+'world'  =>  'dlrow'
+
+My Sol:
+
+function solution(str){
+  var j = str.length - 1,
+      str = str.split(''),
+      temp;
+  for (var i = 0; i <= Math.floor(str.length / 2); i++) {
+    temp = str[i];
+    str[i] = str[j]
+    str[j] = temp
+    j--;
+  }
+  return str.join('')
+}
