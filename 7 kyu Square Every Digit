@@ -1,0 +1,21 @@
+Kata:
+
+Description:
+Welcome. In this kata, you are asked to square every digit of a number and concatenate them.
+
+For example, if we run 9119 through the function, 811181 will come out, because 92 is 81 and 12 is 1.
+
+Note: The function accepts an integer and returns an integer
+
+My Sol:
+
+function squareDigits(num){
+  var digits = []
+  while (num >= 10) {
+    digits.unshift(num % 10);
+    num = Math.floor(num / 10)
+  }
+  digits.unshift(num);
+  digits = digits.map(num => num * num);
+  return Number(digits.join(''))
+}
