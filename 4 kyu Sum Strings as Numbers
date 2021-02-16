@@ -1,0 +1,39 @@
+Kata:
+
+Description:
+Given the string representations of two integers, return the string representation of the sum of those integers.
+
+For example:
+
+sumStrings('1','2') // => '3'
+A string representation of an integer will contain no characters besides the ten numerals "0" to "9".
+
+My Sol:
+
+function sumStrings(a,b) {
+  var carry = 0;
+  var number = []
+  var digit = 0;
+  if (a.length >= b.length) {
+    while (a.length !== b.length) {
+      b = 0 + b
+    }
+    for (var i = a.length - 1; i >= 0; i--) {
+      digit = (Number(a[i]) + Number(b[i]) + carry) % 10
+      number.unshift(digit)
+      carry = ((Number(a[i]) + Number(b[i]) + carry) - digit) / 10;
+    }
+  } else {
+    while (a.length !== b.length) {
+      a = 0 + a
+    }
+    for (var i = a.length - 1; i >= 0; i--) {
+      digit = (Number(a[i]) + Number(b[i]) + carry) % 10
+      number.unshift(digit)
+      carry = ((Number(a[i]) + Number(b[i]) + carry) - digit) / 10;
+    }
+  }
+  if (carry === 1) number.unshift(1);
+  while (number[0] === 0) number.shift();
+  return number.join('')
+}
