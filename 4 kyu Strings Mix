@@ -1,0 +1,197 @@
+Kata:
+
+Description:
+Given two strings s1 and s2, we want to visualize how different the two strings are. We will only take into account the lowercase letters (a to z). First let us count the frequency of each lowercase letters in s1 and s2.
+
+s1 = "A aaaa bb c"
+
+s2 = "& aaa bbb c d"
+
+s1 has 4 'a', 2 'b', 1 'c'
+
+s2 has 3 'a', 3 'b', 1 'c', 1 'd'
+
+So the maximum for 'a' in s1 and s2 is 4 from s1; the maximum for 'b' is 3 from s2. In the following we will not consider letters when the maximum of their occurrences is less than or equal to 1.
+
+We can resume the differences between s1 and s2 in the following string: "1:aaaa/2:bbb" where 1 in 1:aaaa stands for string s1 and aaaa because the maximum for a is 4. In the same manner 2:bbb stands for string s2 and bbb because the maximum for b is 3.
+
+The task is to produce a string in which each lowercase letters of s1 or s2 appears as many times as its maximum if this maximum is strictly greater than 1; these letters will be prefixed by the number of the string where they appear with their maximum value and :. If the maximum is in s1 as well as in s2 the prefix is =:.
+
+In the result, substrings (a substring is for example 2:nnnnn or 1:hhh; it contains the prefix) will be in decreasing order of their length and when they have the same length sorted in ascending lexicographic order (letters and digits - more precisely sorted by codepoint); the different groups will be separated by '/'. See examples and "Example Tests".
+
+Hopefully other examples can make this clearer.
+
+s1 = "my&friend&Paul has heavy hats! &"
+s2 = "my friend John has many many friends &"
+mix(s1, s2) --> "2:nnnnn/1:aaaa/1:hhh/2:mmm/2:yyy/2:dd/2:ff/2:ii/2:rr/=:ee/=:ss"
+
+s1 = "mmmmm m nnnnn y&friend&Paul has heavy hats! &"
+s2 = "my frie n d Joh n has ma n y ma n y frie n ds n&"
+mix(s1, s2) --> "1:mmmmmm/=:nnnnnn/1:aaaa/1:hhh/2:yyy/2:dd/2:ff/2:ii/2:rr/=:ee/=:ss"
+
+s1="Are the kids at home? aaaaa fffff"
+s2="Yes they are here! aaaaa fffff"
+mix(s1, s2) --> "=:aaaaaa/2:eeeee/=:fffff/1:tt/2:rr/=:hh"
+Note for Swift, R, PowerShell
+The prefix =: is replaced by E:
+
+s1 = "mmmmm m nnnnn y&friend&Paul has heavy hats! &"
+s2 = "my frie n d Joh n has ma n y ma n y frie n ds n&"
+mix(s1, s2) --> "1:mmmmmm/E:nnnnnn/1:aaaa/1:hhh/2:yyy/2:dd/2:ff/2:ii/2:rr/E:ee/E:ss"
+
+My Sol:
+
+function mix(s1, s2) {
+  var lowerA = getLowerCaseLetters(s1),
+      lowerB = getLowerCaseLetters(s2);
+  
+  console.log(lowerA, lowerB)
+  var keysA = Object.keys(lowerA),
+      keysB = Object.keys(lowerB),
+      propA,
+      propB,
+      valueA,
+      valueB;
+  console.log(keysA, keysB)
+  var result = '';
+  var equal = []
+  for (var i = 0; i < keysA.length; i++) {
+    propA = keysA[i];
+    valueA = lowerA[propA];
+    if (propA in lowerB) {
+      if (lowerA[propA] === lowerB[propA]) {
+        equal.push([propA, valueA])
+        delete lowerB[propA];
+        delete lowerA[propA];
+      } else if (lowerA[propA] > lowerB[propA]) {
+        delete lowerB[propA];
+      } else {
+        delete lowerA[propA];
+      }
+    }
+  }
+  var i = 0,
+      j = 0,
+      n = 0,
+      keysB = Object.keys(lowerB),
+      len = keysA.length + keysB.length;
+  
+  var itemsA = Object.keys(lowerA).map(function(key) {
+    return [key, lowerA[key]];
+  });
+  itemsA.sort(function(first, second) {
+    if (first[1] == second[1]) {
+      if(first[0].charCodeAt(0) < second[0].charCodeAt(0)) { return -1; }
+      if(first[0].charCodeAt(0) > second[0].charCodeAt(0)) { return 1; }
+    }
+    
+    return second[1] - first[1];
+    
+  });
+  var itemsB = Object.keys(lowerB).map(function(key) {
+    return [key, lowerB[key]];
+  });
+  itemsB.sort(function(first, second) {
+    if (first[1] == second[1]) {
+      if(first[0].charCodeAt(0) < second[0].charCodeAt(0)) { return -1; }
+      if(first[0].charCodeAt(0) > second[0].charCodeAt(0)) { return 1; }
+    }
+    
+    return second[1] - first[1];
+  });
+  equal.sort(function(first, second) {
+    if (first[1] == second[1]) {
+      if(first[0].charCodeAt(0) < second[0].charCodeAt(0)) { return -1; }
+      if(first[0].charCodeAt(0) > second[0].charCodeAt(0)) { return 1; }
+    }
+    
+    return second[1] - first[1];
+  });
+  console.log('SORT SORT SORT SORT SORT!!!')
+  console.log(itemsA)
+  console.log('SORT SORT SORT SORT SORT!!!')
+  console.log(itemsB)
+  console.log('EQUAL EQUAL EQUAL EQUAL EQUAL EQUAL !!!')
+  console.log(equal)
+  
+  while (i + j + n < itemsA.length + itemsB.length + equal.length) {
+    console.log(i, j, itemsA.length, itemsB.length)
+    if (i >= itemsA.length && j >= itemsB.length) {
+      result += '/=:' + equal[n][0].repeat(equal[n][1]);
+      n++;
+      continue;
+    }
+    
+    if (i >= itemsA.length) {
+      console.log('xsxs')
+      if (n < equal.length) {
+        if (equal[n][1] > itemsB[j][1]) {
+          result += '/=:' + equal[n][0].repeat(equal[n][1]);
+          n++;
+          continue;
+        }
+      }
+        propB = itemsB[j][0];
+        valueB = itemsB[j][1];
+        result += '/2:' + propB.repeat(valueB);
+        j++;
+        continue
+      }
+      if (j >= itemsB.length) {
+        if (n < equal.length) {
+          if (equal[n][1] > itemsA[i][1]) {
+            result += '/=:' + equal[n][0].repeat(equal[n][1]);
+            n++;
+            continue;
+          }
+        }
+        propA = itemsA[i][0];
+        valueA = itemsA[i][1];
+        result += '/1:' + propA.repeat(valueA);
+        i++;
+        continue
+      }
+    if (n < equal.length) {
+      if (equal[n][1] > itemsA[i][1] && equal[n][1] > itemsB[j][1]) {
+        result += '/=:' + equal[n][0].repeat(equal[n][1]);
+        n++;
+        continue;
+      }
+    }
+    propA = itemsA[i][0];
+    valueA = itemsA[i][1];
+    propB = itemsB[j][0];
+    valueB = itemsB[j][1];
+    
+    if (valueA > valueB) {
+      result += '/1:' + propA.repeat(valueA);
+      i++;
+    } else if (valueB > valueA) {
+      result += '/2:' + propB.repeat(valueB);
+      j++;
+    } else {
+      result += '/1:' + propA.repeat(valueA);
+      i++;
+    }
+    console.log(result)
+  }
+  console.log(lowerA, lowerB)
+  console.log(result)
+  return result.slice(1)
+}
+
+function getLowerCaseLetters(str) {
+  var d = {},
+      d2 = {}
+  for (var i = 0; i < str.length; i++) {
+    if (str[i].charCodeAt(0) >= 97 && str[i].charCodeAt(0) <= 122) {
+      if (str[i] in d) {
+        d[str[i]] += 1
+      } else {
+        d[str[i]] = 1
+      }
+    }
+    if (d[str[i]] > 1) d2[str[i]] = d[str[i]]
+  }
+  return d2
+}
