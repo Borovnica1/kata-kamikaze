@@ -1,0 +1,95 @@
+kATA:
+
+Description:
+Given an array of positive or negative integers
+
+I= [i1,..,in]
+
+you have to produce a sorted array P of the form
+
+[ [p, sum of all ij of I for which p is a prime factor (p positive) of ij] ...]
+
+P will be sorted by increasing order of the prime numbers. The final result has to be given as a string in Java, C#, C, C++ and as an array of arrays in other languages.
+
+Example:
+
+I = [12, 15]; //result = [[2, 12], [3, 27], [5, 15]]
+[2, 3, 5] is the list of all prime factors of the elements of I, hence the result.
+
+Notes:
+
+It can happen that a sum is 0 if some numbers are negative!
+Example: I = [15, 30, -45] 5 divides 15, 30 and (-45) so 5 appears in the result, the sum of the numbers for which 5 is a factor is 0 so we have [5, 0] in the result amongst others.
+
+In Fortran - as in any other language - the returned string is not permitted to contain any redundant trailing whitespace: you can use dynamically allocated character strings.
+
+My SOl:
+
+function sumOfDivided(lst) {
+  if (lst.length === 0) return [];
+  var lst2 = []
+  var primesF = []
+  var pr = false;
+  lst = lst.map(n => {
+    lst2.push(n);
+    while (n%2==0 || n%2==-0) {
+      n /= 2;
+      pr = true;
+    }
+    return n;
+  });
+  if (pr) primesF.push(2)
+  console.log(lst)
+  
+// n must be odd at this point.  So we can 
+  var maxx = Math.max(...lst) > 0 ? Math.max(...lst) : Math.max(...lst) * -1;
+  var minn = Math.min(...lst) < 0 ? Math.min(...lst) * -1 : Math.min(...lst);
+  console.log(Math.min(...lst))
+  console.log(minn)
+  if (minn > maxx) maxx = minn;
+  console.log(maxx)
+  for (var i = 3; i <= Math.sqrt(maxx); i+= 2) {
+    pr = false;
+    // While i divides n, print i and divide n
+    lst = lst.map(n => {
+      while (n%i == 0 || n%i==-0) {
+        n /= i;
+        pr = true
+      }
+      // ovje nesto
+      return n;
+    });
+    if (pr) primesF.push(i);
+  } 
+  console.log(lst)
+// This condition is to handle the case whien 
+// n is a prime number greater than 2 
+//if (n > 2) System.out.print(n);
+  
+  var lst3 = [];
+  lst.forEach((n) => {
+    if (!lst3.includes(n) && !lst3.includes(n*-1)) {
+        lst3.push(n);
+    }
+});
+  console.log(lst3)
+  lst3.forEach(n => {
+    if (n > 2) {
+      primesF.push(n);
+    } else if (n < -2) {
+      primesF.push(n*-1);
+    }
+  })
+  var result = []
+  var sum = 0;
+  primesF = primesF.sort((a, b) => a - b)
+  console.log(primesF)
+  primesF.forEach(num => {
+    sum = 0;
+    lst2.forEach(compNum => {
+      if (compNum % num === 0) sum += compNum;
+    })
+    result.push([num, sum]);
+  })
+  return result;
+}
