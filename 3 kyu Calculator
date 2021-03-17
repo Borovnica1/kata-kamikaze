@@ -1,0 +1,58 @@
+KATA:
+
+Description:
+Create a simple calculator that given a string of operators (), +, -, *, / and numbers separated by spaces returns the value of that expression
+
+Example:
+
+Calculator().evaluate("2 / 2 + 3 * 4 - 6") # => 7
+Remember about the order of operations! Multiplications and divisions have a higher priority and should be performed left-to-right. Additions and subtractions have a lower priority and should also be performed left-to-right.
+
+My Sol:
+
+const Calculator = function() {
+  this.evaluate = string => {
+    string = string.split(' ');
+    var operatorFound = true;
+    var i = 1;
+    while (i < string.length) {
+      operatorFound = false;
+      switch (string[i]) {
+        case '/':
+          string[i-1] = Number(string[i-1]) / Number(string[i+1]);
+          operatorFound = true;
+          break;
+        case '*':
+          string[i-1] = Number(string[i-1]) * Number(string[i+1]);
+          operatorFound = true;
+          break;
+      }
+      if (operatorFound) {
+        string.splice(i, 2);
+        i = -1;
+      }
+      i += 2;
+    }
+    i = 1;
+    operatorFound = true;
+    while (operatorFound) {
+      operatorFound = false;
+      switch (string[i]) {
+        case '-':
+          string[i-1] = Number(string[i-1]) - Number(string[i+1]);
+          operatorFound = true;
+          break;
+        case '+':
+          string[i-1] = Number(string[i-1]) + Number(string[i+1]);
+          operatorFound = true;
+          break;
+      }
+      if (operatorFound) {
+        string.splice(i, 2);
+        i = -1;
+      }
+      i += 2;
+    }
+    return string[0];
+  }
+};
