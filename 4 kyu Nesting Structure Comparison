@@ -1,0 +1,58 @@
+Kata:
+
+Description:
+Complete the function/method (depending on the language) to return true/True when its argument is an array that has the same nesting structures and same corresponding length of nested arrays as the first array.
+
+For example:
+
+ // should return true
+[ 1, 1, 1 ].sameStructureAs( [ 2, 2, 2 ] );          
+[ 1, [ 1, 1 ] ].sameStructureAs( [ 2, [ 2, 2 ] ] );  
+
+ // should return false 
+[ 1, [ 1, 1 ] ].sameStructureAs( [ [ 2, 2 ], 2 ] );  
+[ 1, [ 1, 1 ] ].sameStructureAs( [ [ 2 ], 2 ] );  
+
+// should return true
+[ [ [ ], [ ] ] ].sameStructureAs( [ [ [ ], [ ] ] ] ); 
+
+// should return false
+[ [ [ ], [ ] ] ].sameStructureAs( [ [ 1, 1 ] ] );     
+For your convenience, there is already a function 'isArray(o)' declared and defined that returns true if its argument is an array, false otherwise.
+
+My SOl:
+
+Array.prototype.sameStructureAs = function (other) {
+  if (!isArray(other)) return false
+  var seq = [],
+      seq2 = [];
+  
+  console.log(this)
+  console.log(other)
+  
+  countArrays(this, 0, 0);
+  countArrays(other, 0, 1);
+  
+  function countArrays(arr, count, fiOrSe) {
+    arr.forEach(el => {
+      console.log(isArray(el));
+      count++;
+      if (isArray(el)) {
+        fiOrSe === 0 ? seq.unshift(count) : seq2.unshift(count);
+        
+        countArrays(el, 0, fiOrSe)
+      }
+    })
+    fiOrSe === 0 ? seq.unshift(count) : seq2.unshift(count);
+  }
+  console.log(seq)
+  console.log('SES')
+  console.log(seq2)
+  if (seq.length !== seq2.length) return false
+  for (var i = 0; i < seq.length; i++) {
+    if (seq[i] !== seq2[i]) {
+      return false
+    }
+  }
+  return true;
+};
