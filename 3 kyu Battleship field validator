@@ -1,0 +1,119 @@
+Kata:
+
+Description:
+Write a method that takes a field for well-known board game "Battleship" as an argument and returns true if it has a valid disposition of ships, false otherwise. Argument is guaranteed to be 10*10 two-dimension array. Elements in the array are numbers, 0 if the cell is free and 1 if occupied by ship.
+
+Battleship (also Battleships or Sea Battle) is a guessing game for two players. Each player has a 10x10 grid containing several "ships" and objective is to destroy enemy's forces by targetting individual cells on his field. The ship occupies one or more cells in the grid. Size and number of ships may differ from version to version. In this kata we will use Soviet/Russian version of the game.
+
+
+Before the game begins, players set up the board and place the ships accordingly to the following rules:
+There must be single battleship (size of 4 cells), 2 cruisers (size 3), 3 destroyers (size 2) and 4 submarines (size 1). Any additional ships are not allowed, as well as missing ships.
+Each ship must be a straight line, except for submarines, which are just single cell.
+
+The ship cannot overlap or be in contact with any other ship, neither by edge nor by corner.
+
+This is all you need to solve this kata. If you're interested in more information about the game, visit this link.
+
+My Sol:
+
+function validateBattlefield(field) {
+  var ships = [4, 3, 2, 1];
+  for(var i = 0; i < field.length; i++) {
+    for(var j = 0; j < field[i].length; j++) {
+      if (field[i][j] === 1) {
+        var arr = identifyShip(i, j);
+        var ans = identifySurrounding(i, j, arr[0], arr[2]);
+        if (ans === false) return false;
+        // ship size
+        if (arr[0] > 4) return false;
+        if (ships[arr[0] - 1] > 0) {
+          ships[arr[0] - 1] -= 1
+        } else {
+          return false;
+        }
+        j = arr[1];
+      }
+    }
+  }
+  for(var i = 0; i < ships.length; i++) {
+    if (ships[i] !== 0) return false;
+  }
+  return true;
+  
+  function identifyShip(x, y) {
+    // starting point field[x][y]
+    var i = x,
+        j = y;
+    var count = 0;
+    var dir = 'hor';
+    while (field[x][y] == 1) {
+      field[x][y] = 0;
+      count++;
+      y++
+    }
+    // vertical ship
+    if (count === 1) {
+      dir = 'ver';
+      x = i;
+      y = j;
+      while (field[x+1][y] == 1) {
+        field[x+1][y] = 0;
+        count++;
+        x++;
+      }
+      y++;
+    } else {
+      x++;
+    }
+    return [count, y, dir];
+  }
+  
+  function identifySurrounding(x, y, size, dir) {
+    if (dir == 'hor') {
+      // check diagonals
+      if (x > 0 && y > 0) {
+        if (field[x-1][y-1] == 1) return false; 
+      }
+      if (x < 10 && y > 0) {
+        if (field[x+1][y-1] == 1) return false; 
+      } 
+      if (x > 0 && y+size-1 < 10) {
+        if (field[x-1][y+size] == 1) return false; 
+      }
+      if (x < 10 && y+size-1 < 10) {
+        if (field[x+1][y+size] == 1) return false; 
+      }
+      for(var i = y; y < i + size; y++) {
+        // make sure we are not in first row
+        if (x > 0) {
+          if (field[x-1][y] == 1) return false;
+        }
+        if (x < field.length) {
+          if (field[x+1][y] == 1) return false;
+        }
+      }
+    } else {
+      // check diagonals
+      if (x > 0 && y > 0) {
+        if (field[x-1][y-1] == 1) return false; 
+      }
+      if (x > 0 && y < 10) {
+        if (field[x-1][y+1] == 1) return false; 
+      } 
+      if (x+size-1 < 10 && y > 0) {
+        if (field[x+size][y-1] == 1) return false; 
+      }
+      if (x+size-1 < 10 && y < 10) {
+        if (field[x+size][y+1] == 1) return false; 
+      }
+      for(var i = x; x < i + size; x++) {
+        if (y > 0) {
+          if (field[x][y-1] == 1) return false;
+        }
+        if (y < field.length) {
+          if (field[x][y+1] == 1) return false;
+        }
+      }
+    }
+  }
+}
