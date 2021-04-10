@@ -1,0 +1,130 @@
+Kata:
+
+Description:
+Create a RomanNumerals class that can convert a roman numeral to and from an integer value. It should follow the API demonstrated in the examples below. Multiple roman numeral values will be tested for each helper method.
+
+Modern Roman numerals are written by expressing each digit separately starting with the left most digit and skipping any digit with a value of zero. In Roman numerals 1990 is rendered: 1000=M, 900=CM, 90=XC; resulting in MCMXC. 2008 is written as 2000=MM, 8=VIII; or MMVIII. 1666 uses each Roman symbol in descending order: MDCLXVI.
+
+Examples
+RomanNumerals.toRoman(1000); // should return 'M'
+RomanNumerals.fromRoman('M'); // should return 1000
+Help
+Symbol	Value
+I	1
+V	5
+X	10
+L	50
+C	100
+D	500
+M	1000
+
+
+My Sol:
+
+var RomanNumerals = {
+    toRoman: function(n) {
+      var nums = [],
+          remain = 1;
+      while (n > 0) {
+        remain *= 10;
+        if (n % remain !== 0) {
+          nums.unshift(n % remain);  
+          n -= n % remain;
+        }
+      }
+      nums = nums.map(n => {
+        var ones,
+            fives,
+            full,
+            seq = '';
+        if (n < 10) {
+          ones = 'I';
+          fives = 'V';
+          full = 'X';
+        } else if (n < 100) {
+          n = n / 10;
+          ones = 'X';
+          fives = 'L';
+          full = 'C';
+        } else if (n < 1000) {
+          n = n / 100
+          ones = 'C';
+          fives = 'D';
+          full = 'M';
+        } else {
+          full = 'M';
+          n = n / 1000;
+          while (n > 0) {
+            n -= 1;
+            seq += full;
+          }
+          return seq;
+        };
+        if (n <= 3) {
+          while (n > 0) {
+            seq += ones;
+            n -= 1;
+          }
+          return seq;
+        } else if (n <= 5) {
+          while (n < 5) {
+            seq += ones;
+            n += 1;
+          }
+          seq += fives;
+          return seq;
+        } else if (n <= 8) {
+          seq += fives;
+          while (n > 5) {
+            seq += ones;
+            n -= 1;
+          }
+          return seq;
+        } else {
+          while (n < 10) {
+            seq += ones;
+            n += 1;
+          }
+          seq += full;
+          return seq;
+        }
+      });
+      return nums.join('');
+    },
+    fromRoman: function(r) {
+      var nums = [];
+      r.split('').forEach(letter => {
+        switch(letter) {
+            case 'I':
+            letter = 1;
+            break;
+            case 'V':
+            letter = 5;
+            break;
+            case 'X':
+            letter = 10;
+            break;
+            case 'L':
+            letter = 50;
+            break;
+            case 'C':
+            letter = 100;
+            break;
+            case 'D':
+            letter = 500;
+            break;
+            case 'M':
+            letter = 1000;
+            break;
+        }
+        nums.unshift(letter);
+      });
+      return nums.reduce((a, b, index) => {
+        if (nums[index-1] > b) {
+          return a - b;
+        } else {
+          return a + b;
+        }
+      });
+    }
+};
