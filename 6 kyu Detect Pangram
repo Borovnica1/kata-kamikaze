@@ -1,0 +1,24 @@
+KATA:
+
+Description:
+A pangram is a sentence that contains every single letter of the alphabet at least once. For example, the sentence "The quick brown fox jumps over the lazy dog" is a pangram, because it uses the letters A-Z at least once (case is irrelevant).
+
+Given a string, detect whether or not it is a pangram. Return True if it is, False if not. Ignore numbers and punctuation.
+
+My Sol:
+
+function isPangram(string){
+  var d = {}
+  for (var i = 65; i < 65+26; i++) {
+    d[String.fromCharCode(i)] = 0;
+  }
+  string.split('').forEach(char => {
+    if (char.toUpperCase().charCodeAt(0) >= 65 && char.toUpperCase().charCodeAt(0) < 91) {
+      d[char.toUpperCase()] += 1;
+    }
+  })
+  for (var key in d) {
+    if (d[key] == 0) return false
+  }
+  return true
+}
