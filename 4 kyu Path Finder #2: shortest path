@@ -1,0 +1,107 @@
+Kata:
+
+Description:
+Task
+You are at position [0, 0] in maze NxN and you can only move in one of the four cardinal directions (i.e. North, East, South, West). Return the minimal number of steps to exit position [N-1, N-1] if it is possible to reach the exit from the starting position. Otherwise, return false.
+
+Empty positions are marked .. Walls are marked W. Start and exit positions are guaranteed to be empty in all test cases.
+
+Path Finder Series:
+#1: can you reach the exit?
+#2: shortest path
+#3: the Alpinist
+#4: where are you?
+#5: there's someone here
+ALGORITHMS
+
+My SOl:
+
+function pathFinder(maze){
+  var canExit = false;
+  var steps = 0;
+  maze = maze.split('\n')
+  maze = maze.map(row => {
+    row = row.split('')
+    return row
+  })
+  var n = maze.length - 1;
+  
+  function findNeighs(nei) {
+    var a = [];
+    var i = nei[0]
+    var j = nei[1]
+    var step = nei[2] + 1;
+    
+    if (i-1 >= 0){
+      if (maze[i-1][j] != 'W') a.push([i-1,j,step]) 
+    }
+    if (i+1 <= n){
+      if (maze[i+1][j] != 'W') a.push([i+1,j,step]) 
+    }
+    if (j-1 >= 0){
+      if (maze[i][j-1] != 'W') a.push([i,j-1,step]) 
+    }
+    if (j+1 <= n){
+      if (maze[i][j+1] != 'W') a.push([i,j+1,step]) 
+    }
+    return a;
+  }
+  var lol = 0
+  var minSteps;
+  function bfs(neighs) {
+    if (neighs == 0) return
+    // check if we reached the end
+    for (var i = 0; i < neighs.length; i++) {
+      for (var g = 0; g < neighs[i].length; g++) {
+        if (neighs[i][g][0] == n && neighs[i][g][1] == n) {
+          minSteps = neighs[i][g][2]
+          return minSteps
+        }
+      }
+      
+    }
+    
+    var newNeighs = [];
+    neighs.forEach(nSet => {
+      nSet.forEach(n => {
+        maze[n[0]][n[1]] = 'W';
+        var p = findNeighs(n);
+        if (p != 0) {
+          newNeighs.push(p);
+          
+        }
+        
+      })
+    })
+    
+    var uniNeighs = [];
+    var duplicate = false;
+    for (var i = 0; i < newNeighs.length; i++) {
+      duplicate = false
+      for (var j = 0; j < uniNeighs.length; j++) {
+        // we are in n sets
+        if (newNeighs[i].length == uniNeighs[j].length) {
+          duplicate = true;
+          // go over all n in those n sets and check
+          for (var x = 0; x < newNeighs[i].length; x++) {
+            if (newNeighs[i][x][0] != uniNeighs[j][x][0] ||
+                newNeighs[i][x][1] != uniNeighs[j][x][1] ||
+                newNeighs[i][x][2] != uniNeighs[j][x][2]) {
+              duplicate = false;
+              break;
+            }
+          }
+          if (duplicate) break;
+        }
+      }
+      if (!duplicate) uniNeighs.push(newNeighs[i]);
+      
+    }
+    // sum all neighs of theirs and call bfs again
+    bfs(uniNeighs);
+  }
+  bfs([[[0,0,0]]]);
+  
+  return minSteps >= 0 ? minSteps : false;
+  
+}
