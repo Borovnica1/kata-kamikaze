@@ -1,0 +1,32 @@
+Kata:
+
+Description:
+Assume "#" is like a backspace in string. This means that string "a#bc#d" actually is "bd"
+
+Your task is to process a string with "#" symbols.
+
+Examples
+"abc#d##c"      ==>  "ac"
+"abc##d######"  ==>  ""
+"#######"       ==>  ""
+""              ==>  ""
+
+My Sol:
+
+function cleanString(s) {
+  var i = 0;
+  s = s.split('')
+  while (i < s.length) {
+    if (s[i] == '#') {
+      if (i == 0) {
+        s.splice(i, 1);
+      } else {
+        s.splice(i-1, 2);        
+      }
+      i -= 2
+    }
+    i++;
+  }
+  return s.join('');
+};
+
