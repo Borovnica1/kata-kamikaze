@@ -1,0 +1,108 @@
+kATA:
+
+Description:
+Task
+You are at start location [0, 0] in mountain area of NxN and you can only move in one of the four cardinal directions (i.e. North, East, South, West). Return minimal number of climb rounds to target location [N-1, N-1]. Number of climb rounds between adjacent locations is defined as difference of location altitudes (ascending or descending).
+
+Location altitude is defined as an integer number (0-9).
+
+Path Finder Series:
+#1: can you reach the exit?
+#2: shortest path
+#3: the Alpinist
+#4: where are you?
+#5: there's someone here
+
+
+SOl:
+
+function pathFinder(maze){
+  maze = maze.split('\n')
+  maze = maze.map(row => {
+    row = row.split('')
+    row = row.map(c => {
+      return parseInt(c, 10)
+    })
+    return row;
+  })
+  var d = {},
+      n = maze.length-1;
+  /*
+  let pq = new PriorityQueue('Blue');
+  console.log(pq)
+  pq.enqueue(125, [0, 2]);
+  pq.enqueue(88, [353, 1]);
+  pq.enqueue(25, [8, 1]);
+  pq.enqueue(3, [0, 65865865]);
+  pq.enqueue(99, [6, 1]);
+  pq.enqueue(7, [6, 1]);
+  pq.dequeue();
+  pq.dequeue();
+  pq.print()
+  console.log(pq.empty())
+  */
+  let pq = new PriorityQueue(),
+      neighbours = [[1,0],[-1,0],[0,1],[0,-1]]
+  pq.enqueue(0, [0, 0]);
+  
+  while (!pq.empty()) {
+    var curr = pq.dequeue();
+    if (curr[1] in d) {
+      if (d[curr[1]] <= curr[0]) continue
+    }
+    d[curr[1]] = curr[0]
+    if (curr[1][0] == n && curr[1][1] == n) break;
+    for (var nei of neighbours) {
+      var temp = [curr[1][0] + nei[0], curr[1][1] + nei[1]];
+      if (0 <= temp[0] && temp[0] <= n && 0 <= temp[1] && temp[1] <= n) {
+        var tempCost = Math.abs( maze[temp[0]][temp[1]] - maze[curr[1][0]][curr[1][1]]);
+        if (temp in d) {
+          if (d[temp] <= tempCost + curr[0]) continue
+        }
+        pq.enqueue(tempCost+curr[0], temp);
+      }
+    }
+    
+  }
+  return d[[n,n]]
+  
+}
+
+function PriorityQueue(color) {
+  var items = []
+  this.color = color;
+  function QueueElement(priority, element) {
+    this.priority = priority;
+    this.element = element;
+  }
+  
+  this.enqueue = function enqueue(pr, el) {
+    let queueEl = new QueueElement(pr, el);
+    let added = false;
+    for (let i = 0; i < items.length; i++) {
+      if (queueEl.priority < items[i].priority) {
+        items.splice(i, 0, queueEl);
+        
+        added = true;
+        break;
+      }
+    }
+    
+    if (!added) {
+      items.push(queueEl);
+    }
+  }
+  
+  this.dequeue = function dequeue() {
+    var item = items.shift();
+    return [item.priority, item.element];
+    // or items.shift();
+  }
+  this.empty = function() {
+    return items.length == 0 ? true : false;
+  }
+  this.print = function() {
+    console.log('LOOL')
+    console.log(items)
+  }
+}
