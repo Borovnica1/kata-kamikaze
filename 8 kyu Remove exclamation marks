@@ -1,0 +1,17 @@
+KATA:
+
+Description:
+Write function RemoveExclamationMarks which removes all exclamation marks from a given string.
+
+
+
+Sol:
+
+function removeExclamationMarks(s) {
+  var res = ''
+  for(var i = 0; i < s.length; i++) {
+    if (s[i] === '!') continue
+    res += s[i]
+  }
+  return res
+}
