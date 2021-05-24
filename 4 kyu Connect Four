@@ -1,0 +1,119 @@
+Kata:
+
+Description:
+Connect Four
+Take a look at wiki description of Connect Four game:
+
+Wiki Connect Four
+
+The grid is 6 row by 7 columns, those being named from A to G.
+
+You will receive a list of strings showing the order of the pieces which dropped in columns:
+
+  piecesPositionList = ["A_Red",
+                        "B_Yellow",
+                        "A_Red",
+                        "B_Yellow",
+                        "A_Red",
+                        "B_Yellow",
+                        "G_Red",
+                        "B_Yellow"]
+The list may contain up to 42 moves and shows the order the players are playing.
+
+The first player who connects four items of the same color is the winner.
+
+You should return "Yellow", "Red" or "Draw" accordingly.
+
+
+
+MY Sol:
+
+function whoIsWinner(piecesPositionList){
+  var matrix = new Array(6);
+  var m = 6,
+      n = 7;
+  for (var i = 0; i < matrix.length; i++) {
+    matrix[i] = new Array(7).fill('o');
+  }
+  for (var str of piecesPositionList) {
+    var won = false;
+    var i = 5;
+    var j = str[0].charCodeAt(0)-65;
+    while (matrix[i][j] != 'o') {
+      i--;
+    }
+    if (str[2] == 'R') {
+      matrix[i][j] = 'R'
+    } else {
+      matrix[i][j] = 'Y'
+    }
+    won = checkWin(str[2], i, j)
+    if (won) return str.slice(2);
+  }
+  function checkWin(p, i, j) {
+    var count;
+    if (checkVer(i,i) || checkHor(j, j) || checkDia1(i,j,i,j) || checkDia2(i,j,i,j)) return true;
+    else return false;
+    function checkVer(u, d) {
+      count = -1
+      while (matrix[u][j] == p) {
+        count++
+        u--;
+        if (u < 0) break
+      }
+      while (matrix[d][j] == p) {
+        count++
+        d++;
+        if (d >= m) break
+      }
+      return count >= 4 ? true : false;
+    }
+    function checkHor(l, r) {
+      count = -1
+      while (matrix[i][l] == p) {
+        count++
+        l--;
+        if (l < 0) break
+      }
+      while (matrix[i][r] == p) {
+        count++
+        r++;
+        if (r >= n) break
+      }
+      return count >= 4 ? true : false;
+    }
+    function checkDia1(d,l,u,r) {
+      count = -1
+      while (matrix[d][l] == p) {
+        count++
+        d++;
+        l--;
+        if (l < 0 || d >= m) break
+      }
+      while (matrix[u][r] == p) {
+        count++
+        r++;
+        u--;
+        if (r >= n || u < 0) break
+      }
+      return count >= 4 ? true : false;
+    }
+    function checkDia2(u,l,d,r) {
+      count = -1
+      while (matrix[u][l] == p) {
+        count++
+        u--;
+        l--;
+        if (l < 0 || u < 0) break
+      }
+      while (matrix[d][r] == p) {
+        count++
+        d++;
+        r++;
+        if (r >= n || d >= m) break
+      }
+      return count >= 4 ? true : false;
+    }
+  }
+  return 'Draw'
+}
