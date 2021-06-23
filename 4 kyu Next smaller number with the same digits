@@ -1,0 +1,53 @@
+Kata:
+
+Description:
+Write a function that takes a positive integer and returns the next smaller positive integer containing the same digits.
+
+For example:
+
+nextSmaller(21) == 12
+nextSmaller(531) == 513
+nextSmaller(2071) == 2017
+Return -1 (for Haskell: return Nothing, for Rust: return None), when there is no smaller number that contains the same digits. Also return -1 when the next smaller number with the same digits would require the leading digit to be zero.
+
+nextSmaller(9) == -1
+nextSmaller(111) == -1
+nextSmaller(135) == -1
+nextSmaller(1027) == -1 // 0721 is out since we don't write numbers with leading zeros
+some tests will include very large numbers.
+test data only employs positive integers.
+The function you write for this challenge is the inverse of this kata: "Next bigger number with the same digits."
+
+My Sol:
+
+function nextSmaller(n) {
+  // start from end
+  // keep a window of numbers
+  // and first time some number from window is 
+  // smaller then the pointed number change them and make deacresing order from left of the window
+  const digits = [];
+  while (n >= 10) {
+    digits.unshift(n % 10)
+    n = Math.floor(n / 10);
+  }
+  digits.unshift(n)
+  let window = [digits[digits.length-1]];
+  let pointed = digits.length-2;
+  while (digits[pointed] <= Math.min(...window)) {
+    window.push(digits[pointed]);
+    pointed--;
+    
+    if (pointed === -1) return pointed;
+  }
+  if (pointed === -1) return pointed;
+  window.push(digits[pointed]);
+  window = window.sort((a, b) => b - a);
+  const nextSmallestIndex = window.findIndex(el => el < digits[pointed]);
+  const nextSmallest = window.splice(nextSmallestIndex, 1);
+  digits[pointed] = nextSmallest[0];
+  digits.splice(pointed+1)
+  let res = '';
+  digits.forEach(el => res += el);
+  window.forEach(el => res += el);
+  return digits[0] == 0 ? -1 : Number(res);
+}
