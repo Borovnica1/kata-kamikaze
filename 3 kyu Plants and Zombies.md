@@ -8,7 +8,7 @@ Mechanics
 The two images below represent the lawn (for the test example below) at separate stages in the game.
 Left: state at move 3, before shooters fire. Right:state at move 5, after shooters fire. (Moves are 0-based)
 
-example image
+![plants vs zombies demo picture](plantsvszombies.png)
 Moves: During a move, new zombies appear and/or existing ones move forward one space to the left. Then the shooters fire. This two-step process repeats.
 If a zombie reaches a shooter's position, it destroys that shooter. In the example image above, the zombie at [4,4] on the left reaches the shooter at [4,2] and destroys it. The zombie has 1 health point remaining and is eliminated in the same move by the shooter at [4,0].
 Numbered shooters shoot straight (to the right) a given number of times per move. In the example image, the green numbered shooter at [0,0] fires 2 times per move.
