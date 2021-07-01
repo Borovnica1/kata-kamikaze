@@ -56,7 +56,6 @@ function plantsAndZombies(lawn,zombies){
   let moves = 0;
   let noZombies;
   while (true) {
-    
     // add zombies
      zombies.forEach((zombie, k) => {
       if (zombie[0] === 0) {
@@ -64,7 +63,6 @@ function plantsAndZombies(lawn,zombies){
       }
     })
     zombies = zombies.filter(zombie => zombie[0] > 0);
-    
     // first only numbered plants
     lawn.forEach((row, i) => {
       row.forEach((spot, j) => {
@@ -95,7 +93,6 @@ function plantsAndZombies(lawn,zombies){
     while (j !== -1) {
       const spot = lawn[i][j];
       if (spot === 'S') {
-        
         // get zombies from all 3 lanes
         // horizontal lane
           zombiesRows[i].some((zombie, k) => {
@@ -111,7 +108,6 @@ function plantsAndZombies(lawn,zombies){
             }
             return false;
           })
-          
           // diagonal lanes
           // diagonal up
           let iDia = i
@@ -142,12 +138,10 @@ function plantsAndZombies(lawn,zombies){
           while (true) {
             iDia++;
             jDia++;
-
             if (iDia > lawn.length-1 || jDia > lawn[0].length-1) break
             // check if any zombies on this place
             let zombieShot = false;
             zombiesRows[iDia].some((zombie, k) => {
-
               if (zombie[0] == lawn[0].length-1 - jDia) {
                 zombie[1] -= 1;
                 // check if this killed him and remove him if so
@@ -162,14 +156,12 @@ function plantsAndZombies(lawn,zombies){
             if (zombieShot) break
           }
         }
-      
       if (i === lawn.length-1) {
         i = -1;
         j--;
       }
       i++;
     }
-        
     // update all zombie moves by one
     zombiesRows.forEach((zRow, i) => zRow.forEach(zombie => {
       zombie[0]++;      
@@ -182,7 +174,6 @@ function plantsAndZombies(lawn,zombies){
       zombie[0]--;
     })
     moves++;
-    
     // if zombieRows all empty or any zombie has move to 0
     noZombies = zombiesRows.every(zRow => zRow.length === 0) && zombies.length === 0;
     const zombieMoveIsZero = zombiesRows.some(zRow => zRow.some(zombie => zombie[0] == lawn[0].length));
