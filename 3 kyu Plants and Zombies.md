@@ -44,19 +44,20 @@ If you enjoyed this kata, be sure to check out my other katas.
 
 My SOl:
 
-function plantsAndZombies(lawn,zombies){
-  const zombiesRows = [];
-  for (let i = 0; i < lawn.length; i++) {
-    zombiesRows.push([]);
-  }
-  for (let i = 0; i < lawn.length; i++) {
-    zombiesRows[i] = zombiesRows[i].sort((a, b) => b[0] - a[0]);
-  }
-  lawn = lawn.map(row => row.split(''));
-  let moves = 0;
-  let noZombies;
-  while (true) {
-    
+    // something
+    function plantsAndZombies(lawn,zombies){
+        const zombiesRows = [];
+        for (let i = 0; i < lawn.length; i++) {
+            zombiesRows.push([]);
+        }
+        for (let i = 0; i < lawn.length; i++) {
+            zombiesRows[i] = zombiesRows[i].sort((a, b) => b[0] - a[0]);
+        }
+        lawn = lawn.map(row => row.split(''));
+        let moves = 0;
+        let noZombies;
+        while (true) {
+  
     // add zombies
      zombies.forEach((zombie, k) => {
       if (zombie[0] === 0) {
@@ -68,15 +69,18 @@ function plantsAndZombies(lawn,zombies){
     // first only numbered plants
     lawn.forEach((row, i) => {
       row.forEach((spot, j) => {
+      
         // switch fire numbered,, later make for S from right and top
         if (spot !== ' ' && spot !== 'S') {
           let damage = Number(spot);
           zombiesRows[i].some((zombie, k) => {
+          
             // first zombie we can hit
             const plantSpot = row.length - j-1;;
             if (zombie[0] < plantSpot) {
               zombie[1] -= damage;
               damage = 0
+              
               // check if this killed him and remove him if so
               if (zombie[1] <= 0) {
                 // save damage for next one
@@ -95,7 +99,7 @@ function plantsAndZombies(lawn,zombies){
     while (j !== -1) {
       const spot = lawn[i][j];
       if (spot === 'S') {
-        
+      
         // get zombies from all 3 lanes
         // horizontal lane
           zombiesRows[i].some((zombie, k) => {
@@ -136,18 +140,18 @@ function plantsAndZombies(lawn,zombies){
             })
             if (zombieShot) break;
           }
+          
           // diagonal down
           iDia = i
           jDia = j
           while (true) {
             iDia++;
             jDia++;
-
             if (iDia > lawn.length-1 || jDia > lawn[0].length-1) break
+            
             // check if any zombies on this place
             let zombieShot = false;
             zombiesRows[iDia].some((zombie, k) => {
-
               if (zombie[0] == lawn[0].length-1 - jDia) {
                 zombie[1] -= 1;
                 // check if this killed him and remove him if so
@@ -162,14 +166,13 @@ function plantsAndZombies(lawn,zombies){
             if (zombieShot) break
           }
         }
-      
       if (i === lawn.length-1) {
         i = -1;
         j--;
       }
       i++;
     }
-        
+    
     // update all zombie moves by one
     zombiesRows.forEach((zRow, i) => zRow.forEach(zombie => {
       zombie[0]++;      
@@ -187,7 +190,6 @@ function plantsAndZombies(lawn,zombies){
     noZombies = zombiesRows.every(zRow => zRow.length === 0) && zombies.length === 0;
     const zombieMoveIsZero = zombiesRows.some(zRow => zRow.some(zombie => zombie[0] == lawn[0].length));
     if (noZombies || zombieMoveIsZero) break
-    
-  }
-  return noZombies ? null : moves;
-}
+    }
+    return noZombies ? null : moves;
+    }
