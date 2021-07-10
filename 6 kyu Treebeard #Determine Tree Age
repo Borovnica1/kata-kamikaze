@@ -1,0 +1,46 @@
+Kata:
+
+Description:
+Back story
+The spitfire Saruman (wizard) was preparing for the war. To gather necessary resources, he had to cut down the trees in the Fangorn Forest. Many trees were chopped down, and long term peace has been disturbed. Not only normal trees live in this forest., but Ents as well. Ents are creatures (walking trees) that take care of that forest. They are very slow thinking beings.
+You are walking through the Fangorn Forest and meet an Ent named Treebeard. He is mourning his loss and trying to remember all of the destroyed trees. To recognize the fallen trees, he often has to specify how old it was. It takes enormous effort for Treebeard to determine a tree’s age. He also doesn’t have much time. He must gather his kind and avenge the fallen! Will you help him recognize his fallen brothers?
+
+Task
+Your task is to write a function which takes a tree trunk (array of arrays) as an input and returns the tree’s age. Each array in the tree trunk is a tree ring, and each ring is equivalent to one year.
+Sometimes knots can grow inside a tree ring. These should be ignored. Knots are represented by an empty array that does not occur in the first two rings. There can be multiple knots in each ring, and they can be in random positions.
+
+  // trunks without knots
+  var oneYearOld = []
+  
+  var twoYearsOld = [[]]
+  
+  var threeYearsOld = [[[]]]
+  
+  // with knots
+  
+  var threeYearsOld = [[[]], []]
+  
+  var fourYearsOld = [[[],[[]],[]]]
+
+MY Sol:
+
+const treeAge = treeTrunk => {
+  const rec = (r, d) => {
+    if (r.length == 0) return d
+    const rings = [];
+    for (let i = 0; i < r.length; i++) {
+      rings.push(rec(r[i], d+1));
+    }
+    return Math.max(...rings)
+  }
+  return rec(treeTrunk, 1);
+}
+
+/*
+
+"Many of those trees were my friends creatures I had known from nut and acorn;
+many had voices of their own that are lost for ever now.
+And there are wastes of stump and bramble where once there were singing groves.
+I have been idle. I have let things slip. It must stop!"
+
+*/
